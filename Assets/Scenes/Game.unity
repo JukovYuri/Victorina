@@ -2559,6 +2559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 500cec1b87a112641a4dbc2e497a77dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timer: 5
   infoQuestionsAnswers: {fileID: 80729182}
   infoTimer: {fileID: 468553670}
   infoLife: {fileID: 1423495545}

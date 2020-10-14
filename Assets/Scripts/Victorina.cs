@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Victorina : MonoBehaviour
 {
+    public float timer;
+    [Space(15)]
     public Text infoQuestionsAnswers;
     public Text infoTimer;
     public Text infoLife;
@@ -24,18 +27,30 @@ public class Victorina : MonoBehaviour
 
     void Start()
     {
+
         //запуск таймера
 
-        
+
         //пересортировать массив
 
-        
 
+        currentQuestion = arrayQuestions[0];
 
     }
 
     void Update()
     {
+        timer -= Time.deltaTime;
+        int min = Mathf.FloorToInt(timer / 60);
+        int sec = Mathf.FloorToInt(timer % 60);
+        infoTimer.text = $"{min}<color=white> : </color>{sec.ToString("00")}";
+        if (min == 0 && sec == 0)
+        {
+            SceneManager.LoadScene(2);
+        }
+        
+
+
         //проверка на правильность
         //изменение инфо игры
     }
