@@ -12,6 +12,10 @@ public class Test : MonoBehaviour
     {
         int index = Array.IndexOf(btnAnswers, btn);
         print($"текущий индекс: {index}");
+
+        int value = (int) UnityEngine.Random.Range(0F, 5F);
+        print($"текущий Random: {value}");
+
     }
 
 

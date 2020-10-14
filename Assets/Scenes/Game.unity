@@ -1177,7 +1177,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 701319469}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1613525137}
+        m_MethodName: OnButtonClick
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 701319468}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &701319469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2357,7 +2368,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1469485772}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1613525137}
+        m_MethodName: OnButtonClick
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1469485771}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1469485772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2559,7 +2581,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 500cec1b87a112641a4dbc2e497a77dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timer: 5
+  timer: 10
+  life: 10
   infoQuestionsAnswers: {fileID: 80729182}
   infoTimer: {fileID: 468553670}
   infoLife: {fileID: 1423495545}
@@ -2580,13 +2603,13 @@ MonoBehaviour:
   help: {fileID: 1791230496}
   arrayQuestions:
   - {fileID: 11400000, guid: 365510f073f3c6c46a7a2175d9a50d6e, type: 2}
-  - {fileID: 11400000, guid: 3d7f4fc119b91f148990590039cd344d, type: 2}
-  - {fileID: 11400000, guid: fd0be79f97f6ad94b9805bf467ca6f70, type: 2}
-  - {fileID: 11400000, guid: d7e24e74d313a4f45adcb1b6b3eedca0, type: 2}
-  - {fileID: 11400000, guid: 6f47e3cbe9f559a4f83af96692399669, type: 2}
-  - {fileID: 11400000, guid: acd4beae5cd2726478bf37c01f7f75bf, type: 2}
-  - {fileID: 11400000, guid: b9c2d2ec401f3f646a7d316095e51e3a, type: 2}
-  - {fileID: 11400000, guid: 8a05917ba6248294c8db4f6a8c5df2bb, type: 2}
+  - {fileID: 11400000, guid: 06fc7b6ea9841034eb483e0b1b7a6bc0, type: 2}
+  - {fileID: 11400000, guid: 09b043e054ffbf745b61274c9cf0f6b3, type: 2}
+  - {fileID: 11400000, guid: 4bace6b74400e874fb20b841ad8928cf, type: 2}
+  - {fileID: 11400000, guid: d2a33e0dff36712468ddcc7086f29dc5, type: 2}
+  - {fileID: 11400000, guid: dbe8181185af75b4b8f67a76e914c328, type: 2}
+  - {fileID: 11400000, guid: c0f5f8040dff0924798189055204f9f9, type: 2}
+  - {fileID: 11400000, guid: a3914928f1028244f94f00ae1dace9f3, type: 2}
   currentQuestion: {fileID: 0}
 --- !u!4 &1613525138
 Transform:
@@ -2777,7 +2800,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1700454630}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1613525137}
+        m_MethodName: OnButtonFiftyfiftyClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1700454630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2913,7 +2947,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1760881845}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1613525137}
+        m_MethodName: OnButtonClick
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1760881844}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1760881845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3348,7 +3393,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2111205279}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1613525137}
+        m_MethodName: OnButtonClick
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 2111205278}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2111205279
 MonoBehaviour:
   m_ObjectHideFlags: 0

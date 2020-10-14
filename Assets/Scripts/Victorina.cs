@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class Victorina : MonoBehaviour
 {
     public float timer;
+    public int life;
     [Space(15)]
     public Text infoQuestionsAnswers;
     public Text infoTimer;
@@ -25,47 +26,40 @@ public class Victorina : MonoBehaviour
     [Space(15)]
     public Question currentQuestion;
 
+    int numberQuestion;
+    int numberOfQuestions;
+    float newTimer;
+
+
     void Start()
     {
+        newTimer = timer;
+        numberOfQuestions = arrayQuestions.Length;
+        SetInfoLife(life);
+        SetInfoQuestionsAnswers();
+        GetQuestions(ref numberQuestion);
 
-        //запуск таймера
-
-
-        //пересортировать массив
-
-
-        currentQuestion = arrayQuestions[0];
 
     }
 
     void Update()
     {
-        timer -= Time.deltaTime;
-        int min = Mathf.FloorToInt(timer / 60);
-        int sec = Mathf.FloorToInt(timer % 60);
-        infoTimer.text = $"{min}<color=white> : </color>{sec.ToString("00")}";
-        if (min == 0 && sec == 0)
-        {
-            SceneManager.LoadScene(2);
-        }
-        
-
-
-        //проверка на правильность
-        //изменение инфо игры
+        SetInfoTimer();
+        AllConditions();
     }
 
-    void GetQuestions (int i) {
+    void GetQuestions(ref int number) {
 
-        currentQuestion = arrayQuestions[i];
+        currentQuestion = arrayQuestions[number++];
+        int numberOfAnswers = currentQuestion.contentPossibleAnswers.Length;
 
         contentQuestion.text = currentQuestion.contentQuestion;
         image.sprite = currentQuestion.sprite;
 
 
-        for (int j = 0; j < currentQuestion.contentPossibleAnswers[j].Length; j++)
+        for (int numberAnswer = 0; numberAnswer < numberOfAnswers; numberAnswer++)
         {
-            txtAnswers[j].text = currentQuestion.contentPossibleAnswers[j];
+            txtAnswers[numberAnswer].text = currentQuestion.contentPossibleAnswers[numberAnswer];
         }
     }
 
@@ -73,4 +67,128 @@ public class Victorina : MonoBehaviour
     {
 
     }
+
+    void SetInfoTimer()
+    {
+        if (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            int min = Mathf.FloorToInt(timer / 60);
+            int sec = Mathf.FloorToInt(timer % 60 );
+            infoTimer.text = $"{min}<color=white> : </color>{sec.ToString("00")}";
+        }
+       
+
+    }
+
+    void SetInfoLife(int l)
+    {
+        infoLife.text = $"<color=white>x</color> {l}";
+    }
+
+    void SetInfoQuestionsAnswers()
+    {
+        infoQuestionsAnswers.text = $"{numberQuestion + 1}<color=white> / </color>{numberOfQuestions}";       
+    }
+
+    void AllConditions()
+    {
+
+            if (Mathf.FloorToInt(timer) == 0)
+            {
+                SetInfoLife(--life);
+                SetInfoQuestionsAnswers();
+                GetQuestions(ref numberQuestion);
+                SetNewTimer();
+            //раскрасить
+
+        }
+
+
+        if (life <= 0)
+            {
+                SceneManager.LoadScene(2); //fail
+            }
+
+        if (numberOfQuestions == numberQuestion)
+            {
+                SceneManager.LoadScene(2); //win
+            }
+
+    }
+
+    void SetNewTimer() 
+    {
+        timer = newTimer;
+    }
+
+    public void OnButtonClick(Button btn) 
+    {
+        int index = System.Array.IndexOf(btnAnswers, btn);
+
+        if (index + 1 == currentQuestion.numberTrueAnswer)
+        {
+            SetInfoQuestionsAnswers();
+            GetQuestions(ref numberQuestion);
+            SetNewTimer();
+            //раскрасить да
+        }
+        else
+        {
+            SetInfoLife(--life);
+            SetInfoQuestionsAnswers();
+            GetQuestions(ref numberQuestion);
+            SetNewTimer();
+            //раскрасить нет
+        }
+    }
+
+    public void OnButtonFiftyfiftyClick() 
+    {
+        int index1;
+        int index2;
+        index1 = GetRandom(0, btnAnswers.Length);
+        index2 = GetRandom(0, btnAnswers.Length);
+        while (index1 != currentQuestion.numberTrueAnswer && index2 != currentQuestion.numberTrueAnswer)
+        {
+            index1 = GetRandom(0, btnAnswers.Length);
+            index2 = GetRandom(0, btnAnswers.Length);
+        }
+        btnAnswers[index1].image.color = Color.grey;
+        btnAnswers[index1].interactable = false;
+
+        btnAnswers[index1].image.color = Color.grey;
+        btnAnswers[index2].interactable = false;
+
+        fiftyfifty.interactable = false;
+
+        SetButtonColor(fiftyfifty, Color.grey);
+
+    }
+
+    public void OnButtonPlus20Click()
+    {
+        timer += newTimer;
+    }
+
+    public void OnButtonHelpClick()
+    {
+
+    }
+
+    int GetRandom(int min, int max)
+    {
+        return (int) Random.Range(min, max+1);
+    }
+
+    void SetButtonColor(Button btn, Color color)
+    {
+        btn.image.color = color;
+        if (btn.transform.childCount > 0)
+        {
+
+        }
+
+
+            }
 }
