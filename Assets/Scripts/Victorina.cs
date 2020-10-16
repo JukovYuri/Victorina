@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Unity.Mathematics;
 
 public class Victorina : MonoBehaviour
 {
-    public float timer;
+    public float timerFromInspector;
+    float timer;
     public int life;
     [Space(15)]
     public Text infoQuestionsAnswers;
@@ -26,46 +28,51 @@ public class Victorina : MonoBehaviour
     [Space(15)]
     public Question currentQuestion;
 
-    int numberQuestion;
+    [SerializeField]
+    int numberQuestion = 0;
+    [SerializeField]
     int numberOfQuestions;
-    float newTimer;
+ 
+    [SerializeField]
+    bool startTimer;
+
 
 
     void Start()
     {
-        newTimer = timer;
         numberOfQuestions = arrayQuestions.Length;
+        timer = timerFromInspector;
+        startTimer = true;
+        CheckConditions();
+        UpdateButtonsToStart();
         SetInfoLife(life);
         SetInfoQuestionsAnswers();
-        GetQuestions(ref numberQuestion);
-
-
+        GetNextQuestions(numberQuestion);       
+        ++numberQuestion;
     }
 
     void Update()
     {
-        SetInfoTimer();
-        AllConditions();
+        if (startTimer)
+        {
+            SetInfoTimer();
+        }
+
+        CheckTimeOut();
     }
 
-    void GetQuestions(ref int number) {
-
-        currentQuestion = arrayQuestions[number++];
+    void GetNextQuestions(int number) {
+        currentQuestion = arrayQuestions[number];
         int numberOfAnswers = currentQuestion.contentPossibleAnswers.Length;
 
         contentQuestion.text = currentQuestion.contentQuestion;
         image.sprite = currentQuestion.sprite;
 
 
-        for (int numberAnswer = 0; numberAnswer < numberOfAnswers; numberAnswer++)
+        for (int numbAnswer = 0; numbAnswer < numberOfAnswers; numbAnswer++)
         {
-            txtAnswers[numberAnswer].text = currentQuestion.contentPossibleAnswers[numberAnswer];
+            txtAnswers[numbAnswer].text = currentQuestion.contentPossibleAnswers[numbAnswer];
         }
-    }
-
-    void CheckAnswer()
-    {
-
     }
 
     void SetInfoTimer()
@@ -74,11 +81,9 @@ public class Victorina : MonoBehaviour
         {
             timer -= Time.deltaTime;
             int min = Mathf.FloorToInt(timer / 60);
-            int sec = Mathf.FloorToInt(timer % 60 );
+            int sec = Mathf.RoundToInt(timer % 60);
             infoTimer.text = $"{min}<color=white> : </color>{sec.ToString("00")}";
         }
-       
-
     }
 
     void SetInfoLife(int l)
@@ -91,84 +96,107 @@ public class Victorina : MonoBehaviour
         infoQuestionsAnswers.text = $"{numberQuestion + 1}<color=white> / </color>{numberOfQuestions}";       
     }
 
-    void AllConditions()
+    void CheckTimeOut()
     {
 
-            if (Mathf.FloorToInt(timer) == 0)
+        if (Mathf.RoundToInt(timer) == 0)
             {
-                SetInfoLife(--life);
-                SetInfoQuestionsAnswers();
-                GetQuestions(ref numberQuestion);
-                SetNewTimer();
-            //раскрасить
+                SetResult();
+            }
+    }
 
+
+
+    void CheckConditions() {
+        if (life == 0)
+        {
+            startTimer = false;
+            //SceneManager.LoadScene(2); //fail
+            print("жизни закогчмлмсь");
         }
 
-
-        if (life <= 0)
-            {
-                SceneManager.LoadScene(2); //fail
-            }
-
-        if (numberOfQuestions == numberQuestion)
-            {
-                SceneManager.LoadScene(2); //win
-            }
-
+        if (numberQuestion + 1 > numberOfQuestions)
+        {
+            startTimer = false;
+            //SceneManager.LoadScene(2); //win
+            print("вопросы закогчмлмсь");
+        }
     }
 
-    void SetNewTimer() 
-    {
-        timer = newTimer;
-    }
+
+
 
     public void OnButtonClick(Button btn) 
     {
+        startTimer = false;
+        AnswerButtonsOff();
         int index = System.Array.IndexOf(btnAnswers, btn);
 
-        if (index + 1 == currentQuestion.numberTrueAnswer)
+        if (index == currentQuestion.numberTrueAnswer-1)
         {
-            SetInfoQuestionsAnswers();
-            GetQuestions(ref numberQuestion);
-            SetNewTimer();
-            //раскрасить да
+            SetResult(true, index);
         }
         else
         {
-            SetInfoLife(--life);
-            SetInfoQuestionsAnswers();
-            GetQuestions(ref numberQuestion);
-            SetNewTimer();
-            //раскрасить нет
+            SetResult(false, index);
         }
     }
+
+    void SetResult(bool result, int number)
+    {
+        Button btn = btnAnswers[number];
+        if (result)
+        {
+            SetButtonColor(btn, Color.green);
+            Invoke("Start", 2F);
+        }
+        else
+        {
+            SetButtonColor(btnAnswers[currentQuestion.numberTrueAnswer-1], Color.green);
+            SetButtonColor(btn, Color.red);
+            SetInfoLife(--life);
+            Invoke("Start", 2F);
+        }
+    }
+
+    void SetResult()
+    {
+        startTimer = false;
+        foreach (Button btn in btnAnswers)
+        {
+            SetButtonColor(btn, Color.red);
+            if (btn == btnAnswers[currentQuestion.numberTrueAnswer - 1])
+            {
+                SetButtonColor(btn, Color.green);
+            } 
+        }
+        SetInfoLife(--life);
+        Invoke("Start", 2F);
+    }
+
+
+
 
     public void OnButtonFiftyfiftyClick() 
     {
         int index1;
         int index2;
-        index1 = GetRandom(0, btnAnswers.Length);
-        index2 = GetRandom(0, btnAnswers.Length);
+        index1 = GetRandom(0, btnAnswers.Length-1);
+        index2 = GetRandom(0, btnAnswers.Length-1);
         while (index1 != currentQuestion.numberTrueAnswer && index2 != currentQuestion.numberTrueAnswer)
         {
-            index1 = GetRandom(0, btnAnswers.Length);
-            index2 = GetRandom(0, btnAnswers.Length);
+            index1 = GetRandom(0, btnAnswers.Length-1);
+            index2 = GetRandom(0, btnAnswers.Length-1);
         }
-        btnAnswers[index1].image.color = Color.grey;
-        btnAnswers[index1].interactable = false;
-
-        btnAnswers[index1].image.color = Color.grey;
-        btnAnswers[index2].interactable = false;
-
-        fiftyfifty.interactable = false;
-
-        SetButtonColor(fiftyfifty, Color.grey);
+        SetButtonColor(btnAnswers[index1], Color.gray);
+        SetButtonColor(btnAnswers[index2], Color.gray);
+        SetButtonColor(fiftyfifty, Color.gray);
 
     }
 
     public void OnButtonPlus20Click()
     {
-        timer += newTimer;
+        timer += 20F;
     }
 
     public void OnButtonHelpClick()
@@ -178,17 +206,64 @@ public class Victorina : MonoBehaviour
 
     int GetRandom(int min, int max)
     {
-        return (int) Random.Range(min, max+1);
+        return (int) UnityEngine.Random.Range(min, max+1);
     }
 
     void SetButtonColor(Button btn, Color color)
     {
         btn.image.color = color;
-        if (btn.transform.childCount > 0)
-        {
+        btn.GetComponent<Outline>().effectColor = color * 1.5F;
 
+        if (btn.transform.GetChild(0).GetComponent<Image>())
+        {
+            btn.transform.GetChild(0).GetComponent<Image>().enabled = false;
         }
 
-
+        if (color == Color.gray)
+        {
+            btn.interactable = false;
+            Text[] text = btn.GetComponentsInChildren<Text>();
+            foreach (Text item in text)
+            {
+                item.color = new Color (1,1,1,0.5F);
             }
+        }
+     }
+
+    void UpdateButtonsToStart()
+    {
+        foreach (Button btn in btnAnswers)
+        {      
+            btn.interactable = true;
+            btn.image.color = new Color32(0, 32, 64, 255);
+            btn.GetComponent<Outline>().effectColor = new Color32(102, 255, 204, 255);
+
+            if (btn.transform.GetChild(0).GetComponent<Image>())
+            {
+                btn.transform.GetChild(0).GetComponent<Image>().enabled =true;
+            }
+          
+                Text[] text = btn.GetComponentsInChildren<Text>();
+                foreach (Text item in text)
+                {
+                    item.color = Color.white;
+                }
+
+            if (btn.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>())
+            {
+                btn.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().color = new Color32(0, 32, 64, 255);
+            }
+        }
+    }
+
+    void AnswerButtonsOff() 
+    {
+
+        foreach (Button btn in btnAnswers)
+        {
+            btn.interactable = false;
+            SetButtonColor(btn, Color.gray);
+        }
+    }
+
 }
