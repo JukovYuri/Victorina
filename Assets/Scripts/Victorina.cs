@@ -29,6 +29,7 @@ public class Victorina : MonoBehaviour
     public Question[] arrayQuestions;
     [Space(15)]
     public Question currentQuestion;
+    List<int> listOfRandomNumbers;
 
     [SerializeField]
     int numberQuestion = 0;
@@ -83,11 +84,33 @@ public class Victorina : MonoBehaviour
         contentQuestion.text = currentQuestion.contentQuestion;
         image.sprite = currentQuestion.sprite;
 
-
         for (int numbAnswer = 0; numbAnswer < numberOfAnswers; numbAnswer++)
         {
             txtAnswers[numbAnswer].text = currentQuestion.contentPossibleAnswers[numbAnswer];
         }
+    }
+
+    void GetRandomNextQuestions(int num)
+    {
+        bool flag = false;
+
+        do
+        {
+        num = GetRandom(0, numberOfQuestions);
+
+        foreach (int item in listOfRandomNumbers)
+        {
+            if (num == listOfRandomNumbers[item])
+            {
+                num = GetRandom(0, numberOfQuestions);
+                flag = false;
+            }
+        }
+
+        } while (flag);
+
+        
+
     }
 
     void SetInfoTimer()
@@ -267,7 +290,7 @@ public class Victorina : MonoBehaviour
         foreach (Button btn in btnAnswers)
         {      
             btn.interactable = true;
-            btn.image.color = new Color32(0, 32, 64, 255);
+            btn.image.color = new Color32(0, 25, 50, 255);
             btn.GetComponent<Outline>().effectColor = new Color32(102, 255, 204, 255);
 
             if (btn.transform.GetChild(0).GetComponent<Image>())
