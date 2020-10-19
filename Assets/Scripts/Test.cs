@@ -8,24 +8,51 @@ public class Test : MonoBehaviour
 {
     public Button[] btnAnswers;
     //float timer = 50F;
-
+    List<int> listOfRandomNumbers = new List<int>();
     public void BtnClick(Button btn) 
     {
-
-            int index1;
-            int index2;
-            int numb = 0;
-
-            do
-            {
-                index1 = GetRandom(0, 3);
-                index2 = GetRandom(0, 3);
-                ++numb;
-            print($"Зашли в цикл {numb} раз, и получили {index1}_____{index2}");
-            }
-            while (index1 == 3 || index2 == 3 || index1 == index2);
-            print ($"выбрали это: {index1}_____{index2}");
+        //GetRandomNextQuestions();
+        int rnd = GetRandom(0,2);
+        print(rnd);
     }
+
+
+
+    void GetRandomNextQuestions()
+    {
+        bool isSameNumber = false;
+        int number = GetRandom(0, 3);
+        do
+        {
+
+            foreach (int item in listOfRandomNumbers)
+            {
+                if (number == item)
+                {
+                    number = GetRandom(0, 3);
+                    isSameNumber = true;
+                    break;
+                }
+
+                else
+                {
+                    isSameNumber = false;
+                }
+            }
+        }
+        while (isSameNumber);
+
+        listOfRandomNumbers.Add(number);
+
+        foreach (int item in listOfRandomNumbers)
+        {
+            print(item);
+        }
+    }
+
+
+
+
 
 
 

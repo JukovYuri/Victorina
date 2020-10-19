@@ -9,6 +9,7 @@ public class Victorina : MonoBehaviour
 {
     public float timerFromInspector;
     float timer;
+    float timerForResultForGameEnd;
     public int life;
     [Space(15)]
     public Text infoQuestionsAnswers;
@@ -29,10 +30,9 @@ public class Victorina : MonoBehaviour
     public Question[] arrayQuestions;
     [Space(15)]
     public Question currentQuestion;
-    List<int> listOfRandomNumbers;
+    List<int> listOfRandomNumbers = new List<int>();
 
-    [SerializeField]
-    int numberQuestion = 0;
+    int numberQuestion = 1;
     [SerializeField]
     int numberOfQuestions;
     int numberTrueAnswerButton;
@@ -54,17 +54,18 @@ public class Victorina : MonoBehaviour
         numberOfQuestions = arrayQuestions.Length;
         SetCommentInMainImage(false, "");
         CheckConditions();
+        SetInfoQuestionsAnswers();
 
         if (!isGameEnd)
-        { 
+        {
             UpdateButtonsToStart();
             SetInfoLife(life);
-            SetInfoQuestionsAnswers();
-            GetNextQuestions(numberQuestion);
+
+            GetElementsOfQuestion(GetNextRandomNumberOfQuestion());
             ++numberQuestion;
         }
 
-        
+
     }
 
     void Update()
@@ -76,7 +77,8 @@ public class Victorina : MonoBehaviour
         }
     }
 
-    void GetNextQuestions(int number) {
+    void GetElementsOfQuestion(int number) {
+        --number;
         currentQuestion = arrayQuestions[number];
         numberTrueAnswerButton = currentQuestion.numberTrueAnswer;
         int numberOfAnswers = currentQuestion.contentPossibleAnswers.Length;
@@ -88,29 +90,37 @@ public class Victorina : MonoBehaviour
         {
             txtAnswers[numbAnswer].text = currentQuestion.contentPossibleAnswers[numbAnswer];
         }
+        
     }
 
-    void GetRandomNextQuestions(int num)
+    int GetNextRandomNumberOfQuestion()
     {
-        bool flag = false;
+        bool isSameNumber = false;
+        int number = GetRandom(1, numberOfQuestions);
 
         do
         {
-        num = GetRandom(0, numberOfQuestions);
 
-        foreach (int item in listOfRandomNumbers)
-        {
-            if (num == listOfRandomNumbers[item])
+            foreach (int item in listOfRandomNumbers)
             {
-                num = GetRandom(0, numberOfQuestions);
-                flag = false;
+                if (number == item)
+                {
+                    number = GetRandom(1, numberOfQuestions);
+                    isSameNumber = true;
+                    break;
+                }
+
+                else
+                {
+                    isSameNumber = false;
+                }
             }
         }
+        while (isSameNumber);
 
-        } while (flag);
-
-        
-
+        listOfRandomNumbers.Add(number);
+        print(number);
+        return number;
     }
 
     void SetInfoTimer()
@@ -131,7 +141,7 @@ public class Victorina : MonoBehaviour
 
     void SetInfoQuestionsAnswers()
     {
-        infoQuestionsAnswers.text = $"{numberQuestion + 1}<color=white> / </color>{numberOfQuestions}";       
+        infoQuestionsAnswers.text = $"{numberQuestion}<color=white> / </color>{numberOfQuestions}";       
     }
 
     void CheckTimeOut()
@@ -153,7 +163,7 @@ public class Victorina : MonoBehaviour
             SceneManager.LoadScene(2); //fail
         }
 
-        if (numberQuestion + 1 > numberOfQuestions)
+        if (numberQuestion > numberOfQuestions)
         {
             startTimer = false;
             isGameEnd = true;
@@ -182,6 +192,8 @@ public class Victorina : MonoBehaviour
     void SetResult(bool result, int number, string comment)
     {
         startTimer = false;
+        
+        timerForResultForGameEnd += timerFromInspector - timer;
         AnswerButtonsOff();
         SetCommentInMainImage(true, comment);
         Button btn = btnAnswers[number];

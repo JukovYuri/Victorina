@@ -2742,7 +2742,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 500cec1b87a112641a4dbc2e497a77dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerFromInspector: 120
+  timerFromInspector: 10
   life: 3
   infoQuestionsAnswers: {fileID: 80729182}
   infoTimer: {fileID: 468553670}
@@ -2774,7 +2774,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c0f5f8040dff0924798189055204f9f9, type: 2}
   - {fileID: 11400000, guid: a3914928f1028244f94f00ae1dace9f3, type: 2}
   currentQuestion: {fileID: 0}
-  numberQuestion: 0
   numberOfQuestions: 0
   startTimer: 0
   checkTimeout: 0
