@@ -17,12 +17,14 @@ public class Victorina : MonoBehaviour
     [Space(15)]
     public Image image;
     public Text contentQuestion;
+    public Text comment;
     public Text[] txtAnswers;
     public Button[] btnAnswers;
     [Space(15)]
     public Button fiftyfifty;
     public Button plus20;
     public Button help;
+    public int chance;
     [Space(15)]
     public Question[] arrayQuestions;
     [Space(15)]
@@ -32,23 +34,36 @@ public class Victorina : MonoBehaviour
     int numberQuestion = 0;
     [SerializeField]
     int numberOfQuestions;
+    int numberTrueAnswerButton;
  
     [SerializeField]
     bool startTimer;
+    [SerializeField]
+    bool checkTimeout;
+    bool isGameEnd;
 
 
 
     void Start()
     {
-        numberOfQuestions = arrayQuestions.Length;
         timer = timerFromInspector;
         startTimer = true;
+        checkTimeout = false;
+        isGameEnd = false;
+        numberOfQuestions = arrayQuestions.Length;
+        SetCommentInMainImage(false, "");
         CheckConditions();
-        UpdateButtonsToStart();
-        SetInfoLife(life);
-        SetInfoQuestionsAnswers();
-        GetNextQuestions(numberQuestion);       
-        ++numberQuestion;
+
+        if (!isGameEnd)
+        { 
+            UpdateButtonsToStart();
+            SetInfoLife(life);
+            SetInfoQuestionsAnswers();
+            GetNextQuestions(numberQuestion);
+            ++numberQuestion;
+        }
+
+        
     }
 
     void Update()
@@ -56,13 +71,13 @@ public class Victorina : MonoBehaviour
         if (startTimer)
         {
             SetInfoTimer();
+            CheckTimeOut();
         }
-
-        CheckTimeOut();
     }
 
     void GetNextQuestions(int number) {
         currentQuestion = arrayQuestions[number];
+        numberTrueAnswerButton = currentQuestion.numberTrueAnswer;
         int numberOfAnswers = currentQuestion.contentPossibleAnswers.Length;
 
         contentQuestion.text = currentQuestion.contentQuestion;
@@ -101,25 +116,25 @@ public class Victorina : MonoBehaviour
 
         if (Mathf.RoundToInt(timer) == 0)
             {
-                SetResult();
+                checkTimeout = true;
+                SetResult(false, numberTrueAnswerButton - 1, "Время для ответа закончилось!");
             }
     }
 
-
-
-    void CheckConditions() {
+    void CheckConditions() 
+    {
         if (life == 0)
         {
             startTimer = false;
-            //SceneManager.LoadScene(2); //fail
-            print("жизни закогчмлмсь");
+            isGameEnd = true;
+            SceneManager.LoadScene(2); //fail
         }
 
         if (numberQuestion + 1 > numberOfQuestions)
         {
             startTimer = false;
-            //SceneManager.LoadScene(2); //win
-            print("вопросы закогчмлмсь");
+            isGameEnd = true;
+            SceneManager.LoadScene(2);//win
         }
     }
 
@@ -128,85 +143,102 @@ public class Victorina : MonoBehaviour
 
     public void OnButtonClick(Button btn) 
     {
-        startTimer = false;
-        AnswerButtonsOff();
+
         int index = System.Array.IndexOf(btnAnswers, btn);
 
-        if (index == currentQuestion.numberTrueAnswer-1)
+        if (index == numberTrueAnswerButton - 1)
         {
-            SetResult(true, index);
+            SetResult(true, index, "Да, вы правы!");
         }
         else
         {
-            SetResult(false, index);
+            SetResult(false, index, "Нет, не верно!");
         }
     }
 
-    void SetResult(bool result, int number)
+    void SetResult(bool result, int number, string comment)
     {
+        startTimer = false;
+        AnswerButtonsOff();
+        SetCommentInMainImage(true, comment);
         Button btn = btnAnswers[number];
         if (result)
-        {
+        {          
             SetButtonColor(btn, Color.green);
             Invoke("Start", 2F);
         }
         else
         {
-            SetButtonColor(btnAnswers[currentQuestion.numberTrueAnswer-1], Color.green);
-            SetButtonColor(btn, Color.red);
+            
+            if (checkTimeout)
+            {
+                foreach (Button btns in btnAnswers)
+                {
+                    SetButtonColor(btns, Color.red);
+                    if (btns == btnAnswers[numberTrueAnswerButton - 1])
+                    {
+                        SetButtonColor(btns, Color.green);
+                    }
+                }
+            }
+            else
+            {
+                SetButtonColor(btnAnswers[numberTrueAnswerButton-1], Color.green);
+                SetButtonColor(btn, Color.red);
+            }
+
             SetInfoLife(--life);
             Invoke("Start", 2F);
         }
     }
 
-    void SetResult()
-    {
-        startTimer = false;
-        foreach (Button btn in btnAnswers)
-        {
-            SetButtonColor(btn, Color.red);
-            if (btn == btnAnswers[currentQuestion.numberTrueAnswer - 1])
-            {
-                SetButtonColor(btn, Color.green);
-            } 
-        }
-        SetInfoLife(--life);
-        Invoke("Start", 2F);
-    }
-
-
-
-
     public void OnButtonFiftyfiftyClick() 
     {
         int index1;
         int index2;
-        index1 = GetRandom(0, btnAnswers.Length-1);
-        index2 = GetRandom(0, btnAnswers.Length-1);
-        while (index1 != currentQuestion.numberTrueAnswer && index2 != currentQuestion.numberTrueAnswer)
+
+        do
         {
             index1 = GetRandom(0, btnAnswers.Length-1);
             index2 = GetRandom(0, btnAnswers.Length-1);
-        }
+        } 
+        while (index1 == numberTrueAnswerButton-1 || index2 == numberTrueAnswerButton-1 || index1 == index2);
+
         SetButtonColor(btnAnswers[index1], Color.gray);
         SetButtonColor(btnAnswers[index2], Color.gray);
         SetButtonColor(fiftyfifty, Color.gray);
-
     }
 
     public void OnButtonPlus20Click()
     {
         timer += 20F;
+        SetButtonColor(plus20, Color.gray);
     }
 
     public void OnButtonHelpClick()
     {
+        SetButtonColor(help, Color.gray);
+        AnswerButtonsOff(); 
+        if (GetRandom(0, 100) <= chance)
+        {
+            SetResult(true, numberTrueAnswerButton - 1, "Да, ваш друг прав!");
+        }
+        else
+        {
+            int index;
+            do
+            { 
+                index = GetRandom(0, btnAnswers.Length - 1);                
+            } 
+            while (index == numberTrueAnswerButton - 1);
 
+                SetResult(false, index, "Нет, ваш друг ошибся!");
+        }
     }
 
     int GetRandom(int min, int max)
     {
-        return (int) UnityEngine.Random.Range(min, max+1);
+        return Mathf.RoundToInt(UnityEngine.Random.Range(min, max + 1));
     }
 
     void SetButtonColor(Button btn, Color color)
@@ -264,6 +296,12 @@ public class Victorina : MonoBehaviour
             btn.interactable = false;
             SetButtonColor(btn, Color.gray);
         }
+    }
+
+    void SetCommentInMainImage(bool isActive, string text)
+    {
+        comment.enabled = isActive;
+        comment.text = text;
     }
 
 }

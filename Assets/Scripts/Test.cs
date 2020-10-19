@@ -7,34 +7,31 @@ using UnityEngine.UI;
 public class Test : MonoBehaviour
 {
     public Button[] btnAnswers;
-    float timer = 50F;
+    //float timer = 50F;
 
     public void BtnClick(Button btn) 
     {
-        int index = Array.IndexOf(btnAnswers, btn);
-        print($"текущий индекс: {index}");
 
-        Color32 color = new Color32(0, 32, 64, 255);
-        Color color2 = color;
+            int index1;
+            int index2;
+            int numb = 0;
 
-        int value = (int) UnityEngine.Random.Range(0F, 5F);
-        print($"текущий Random: {color2}");
-
-        Text[] text = btn.GetComponentsInChildren<Text>();
-        foreach (Text item in text)
-        {
-            item.color = Color.blue;
-        }
-
+            do
+            {
+                index1 = GetRandom(0, 3);
+                index2 = GetRandom(0, 3);
+                ++numb;
+            print($"Зашли в цикл {numb} раз, и получили {index1}_____{index2}");
+            }
+            while (index1 == 3 || index2 == 3 || index1 == index2);
+            print ($"выбрали это: {index1}_____{index2}");
     }
 
-    void Update()
+
+
+    int GetRandom(int min, int max)
     {
-        timer -= Time.deltaTime;
-        int min = Mathf.FloorToInt(timer / 60);
-        int sec = Mathf.RoundToInt(timer % 60);
-        print($"{min} : {sec}");
+        return Mathf.RoundToInt(UnityEngine.Random.Range(min, max + 1));
     }
-
 
 }

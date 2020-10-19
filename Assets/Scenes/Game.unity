@@ -988,6 +988,84 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &521132683
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 521132684}
+  - component: {fileID: 521132686}
+  - component: {fileID: 521132685}
+  m_Layer: 5
+  m_Name: Text_Comment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &521132684
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 521132683}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1244679903}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &521132685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 521132683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0.098039225, b: 0.19607845, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 1
+    m_BestFit: 1
+    m_MinSize: 10
+    m_MaxSize: 50
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 0
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: New Text
+--- !u!222 &521132686
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 521132683}
+  m_CullTransparentMesh: 0
 --- !u!1 &650030772
 GameObject:
   m_ObjectHideFlags: 0
@@ -1984,7 +2062,8 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 521132684}
   m_Father: {fileID: 816117834}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2514,7 +2593,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1495086407}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1613525137}
+        m_MethodName: OnButtonPlus20Click
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1495086407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2582,12 +2672,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerFromInspector: 5
-  life: 10
+  life: 3
   infoQuestionsAnswers: {fileID: 80729182}
   infoTimer: {fileID: 468553670}
   infoLife: {fileID: 1423495545}
   image: {fileID: 1244679904}
   contentQuestion: {fileID: 920917919}
+  comment: {fileID: 521132685}
   txtAnswers:
   - {fileID: 1792552654}
   - {fileID: 2096360926}
@@ -2601,6 +2692,7 @@ MonoBehaviour:
   fiftyfifty: {fileID: 1700454629}
   plus20: {fileID: 1495086406}
   help: {fileID: 1791230496}
+  chance: 0
   arrayQuestions:
   - {fileID: 11400000, guid: 365510f073f3c6c46a7a2175d9a50d6e, type: 2}
   - {fileID: 11400000, guid: 06fc7b6ea9841034eb483e0b1b7a6bc0, type: 2}
@@ -2610,10 +2702,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dbe8181185af75b4b8f67a76e914c328, type: 2}
   - {fileID: 11400000, guid: c0f5f8040dff0924798189055204f9f9, type: 2}
   - {fileID: 11400000, guid: a3914928f1028244f94f00ae1dace9f3, type: 2}
+  - {fileID: 11400000, guid: 5f3f41edfbe188448851f49a14cd2d5b, type: 2}
   currentQuestion: {fileID: 0}
   numberQuestion: 0
   numberOfQuestions: 0
   startTimer: 0
+  checkTimeout: 0
 --- !u!4 &1613525138
 Transform:
   m_ObjectHideFlags: 0
@@ -3096,7 +3190,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1791230497}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1613525137}
+        m_MethodName: OnButtonHelpClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1791230497
 MonoBehaviour:
   m_ObjectHideFlags: 0
