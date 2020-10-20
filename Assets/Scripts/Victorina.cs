@@ -9,7 +9,7 @@ public class Victorina : MonoBehaviour
 {
     public float timerFromInspector;
     float timer;
-    float timerForResultForGameEnd;
+    public float timerForResultForGameEnd;
     public int life;
     [Space(15)]
     public Text infoQuestionsAnswers;
@@ -42,6 +42,7 @@ public class Victorina : MonoBehaviour
     [SerializeField]
     bool checkTimeout;
     bool isGameEnd;
+    public bool gameResult;
 
 
 
@@ -119,7 +120,6 @@ public class Victorina : MonoBehaviour
         while (isSameNumber);
 
         listOfRandomNumbers.Add(number);
-        print(number);
         return number;
     }
 
@@ -160,14 +160,25 @@ public class Victorina : MonoBehaviour
         {
             startTimer = false;
             isGameEnd = true;
-            SceneManager.LoadScene(2); //fail
+            gameResult = false;
+            SceneManager.LoadScene(2);
         }
+
+        if ( (numberQuestion > numberOfQuestions) && (life == 0) )
+        {
+            startTimer = false;
+            isGameEnd = true;
+            gameResult = false;
+            SceneManager.LoadScene(2);
+        }
+
 
         if (numberQuestion > numberOfQuestions)
         {
             startTimer = false;
             isGameEnd = true;
-            SceneManager.LoadScene(2);//win
+            gameResult = true;
+            SceneManager.LoadScene(2);
         }
     }
 
