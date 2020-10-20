@@ -7,27 +7,27 @@ public class GameEnd : MonoBehaviour
 {
 
     public Text textResult;
-    public GameResult gameResult;
+    public Victorina victorina;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        gameResult = FindObjectOfType<GameResult>();
+        victorina = FindObjectOfType<Victorina>();
 
-        if (gameResult.result)
+        if (victorina.gameResult)
         {
-            int min = Mathf.FloorToInt(gameResult.spentTime / 60);
-            int sec = Mathf.RoundToInt(gameResult.spentTime % 60);
-            textResult.text = $"Отлично, вы прошли викторину!\n Время, потраченное на размышление: {min}<color=white> : </color>{sec.ToString("00")}";
+            int min = Mathf.FloorToInt(victorina.timerForResultForGameEnd / 60);
+            int sec = Mathf.RoundToInt(victorina.timerForResultForGameEnd % 60);
+            textResult.text = $"Отлично, вы прошли викторину!\n Время, потраченное на размышление: \n{min}<color=white> : </color>{sec.ToString("00")}";
         }
 
         else
         {
-            textResult.text = "У вас больше 3 ошибок. Изучайте материал)";
+            textResult.text = "У вас 3 ошибки, учитесь)...";
         }
 
-        Destroy(gameResult.gameObject);
+        Destroy(victorina.gameObject);
 
     }
 
