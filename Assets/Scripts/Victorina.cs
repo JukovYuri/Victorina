@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Unity.Mathematics;
 
 public class Victorina : MonoBehaviour
 {
@@ -106,28 +105,13 @@ public class Victorina : MonoBehaviour
 
     int GetNextRandomNumberOfQuestion()
     {
-        bool isSameNumber = false;
-        int number = GetRandom(1, numberOfQuestions);
+        bool isSameNumber;
+        int number;
 
         do
         {
-            /isSameNumber = listOfRandomNumbers.Contains(number);
-
-
-            foreach (int item in listOfRandomNumbers)
-            {
-                if (number == item)
-                {
-                    number = GetRandom(1, numberOfQuestions);
-                    isSameNumber = true;
-                    break;
-                }
-
-                else
-                {
-                    isSameNumber = false;
-                }
-            }
+            number = Random.Range(1, numberOfQuestions + 1);
+            isSameNumber = listOfRandomNumbers.Contains(number);
         }
         while (isSameNumber);
 
@@ -218,8 +202,7 @@ public class Victorina : MonoBehaviour
 
     void SetResult(bool result, int number, string comment)
     {
-        startTimer = false;
-        
+        startTimer = false;      
         timerForResultForGameEnd += timerFromInspector - timer;
         AnswerButtonsOff();
         SetCommentInMainImage(true, comment);
@@ -227,7 +210,6 @@ public class Victorina : MonoBehaviour
         if (result)
         {          
             SetButtonColor(btn, Color.green);
-            Invoke("Start", 2F);
         }
         else
         {
@@ -250,8 +232,8 @@ public class Victorina : MonoBehaviour
             }
 
             SetInfoLife(--life);
-            Invoke("Start", 2F);
         }
+        Invoke("Start", 2F);
     }
 
     public void OnButtonFiftyfiftyClick() 
@@ -261,8 +243,8 @@ public class Victorina : MonoBehaviour
 
         do
         {
-            index1 = GetRandom(0, btnAnswers.Length-1); // не обязательно
-            index2 = GetRandom(0, btnAnswers.Length-1);
+            index1 = Random.Range(0, btnAnswers.Length); // не обязательно
+            index2 = Random.Range(0, btnAnswers.Length);
         } 
         while (index1 == numberTrueAnswerButton-1 || index2 == numberTrueAnswerButton-1 || index1 == index2);
 
@@ -280,9 +262,8 @@ public class Victorina : MonoBehaviour
     public void OnButtonHelpClick()
     {
         SetButtonColor(help, Color.gray);
-        AnswerButtonsOff(); 
-       // UnityEngine.Random.value <= chance;
-        if (GetRandom(0, 100) <= chance)
+
+        if (Random.Range(1, 101) <= chance)
         {
             SetResult(true, numberTrueAnswerButton - 1, "Да, ваш друг прав!");
         }
@@ -290,18 +271,13 @@ public class Victorina : MonoBehaviour
         {
             int index;
             do
-            { 
-                index = GetRandom(0, btnAnswers.Length - 1);                
-            } 
-            while (index == numberTrueAnswerButton - 1);
+            {
+                index = Random.Range(0, btnAnswers.Length);
+            }
+            while (index == numberTrueAnswerButton - 1 || btnAnswers[index].interactable == false);
 
                 SetResult(false, index, "Нет, ваш друг ошибся!");
         }
-    }
-
-    int GetRandom(int min, int max)
-    {
-        return Mathf.RoundToInt(UnityEngine.Random.Range(min, max + 1));
     }
 
     void SetButtonColor(Button btn, Color color)
